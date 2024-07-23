@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
- * A drama with a mouse and a cat,
+ * A drama with 2 main characters, a mouse and a cat,
  * they are good friends, and just play games everyday.
  * Sometimes the cat had bad luck but he is not sad and the mouse
  * is smart but not bad. They are the best partner on the earth.
