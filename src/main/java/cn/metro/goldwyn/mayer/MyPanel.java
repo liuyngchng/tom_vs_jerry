@@ -27,7 +27,7 @@ public class MyPanel extends JPanel {
 
     private void thisKeyPressed(KeyEvent e) {
         // TODO add your code here
-        System.out.println(String.format("key %c pressed ", e.getKeyCode()));
+//        System.out.println(String.format("key %c pressed ", e.getKeyCode()));
         if (Drama.isGameOver) {
             System.out.println("Game over, nothing can be done!");
             return;
@@ -42,19 +42,26 @@ public class MyPanel extends JPanel {
             case 's':
             case 'd':
             case 'w':
-                Drama.move(e, this.label6);
+//                Drama.move(e, this.label6);
+                Move.action(e, this.label6);
                 break;
             case 'j':
             case 'k':
             case 'l':
             case 'i':
-                Drama.move(e, this.label5);
+//                Drama.move(e, this.label5);
+                Move.action(e, this.label5);
                 break;
         }
         if(Drama.checkIfMeetCounterpart(this.label5, this.label6)) {
             System.out.println("Tom had caught Jerry, game over");
             Drama.isGameOver = true;
         }
+    }
+
+    private void thisKeyReleased(KeyEvent e) {
+        // TODO add your code here
+        Move.releaseKey(e);
     }
 
     private void initComponents() {
@@ -76,6 +83,10 @@ public class MyPanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 thisKeyPressed(e);
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+                thisKeyReleased(e);
             }
         });
         setLayout(null);

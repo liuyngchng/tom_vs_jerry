@@ -73,13 +73,10 @@ public class Drama {
                 }
             }
         });
-        System.out.println("Tom and Jerry are coming(地球上的2个大聪明来咯)!");
-    }
 
-    public static void move(KeyEvent keyEvent, JLabel jLabel) {
-        Move move = new Move(keyEvent, jLabel);
-        Thread thread = new Thread(move);
+        Thread thread = new Thread(new Move());
         thread.start();
+        System.out.println("Tom and Jerry are coming(地球上的2个大聪明来咯)!");
     }
 
     /**
