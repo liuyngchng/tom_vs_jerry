@@ -23,7 +23,7 @@ public class MoveJob implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -80,13 +80,13 @@ public class MoveJob implements Runnable {
             switch (this.label.getText()) {
                 case "tom":
                     if (!Drama.isTomNeedMove) {
-                        System.out.println("tom ctrl key released, task finish");
+//                        System.out.println("tom ctrl key released, task finish");
                         return;
                     }
                     break;
                 case "jerry":
                     if (!Drama.isJerryNeedMove) {
-                        System.out.println("jerry ctrl key released, task finish");
+//                        System.out.println("jerry ctrl key released, task finish");
                         return;
                     }
                     break;

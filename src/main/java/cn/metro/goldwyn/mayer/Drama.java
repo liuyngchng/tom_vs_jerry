@@ -17,6 +17,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class Drama {
 
+
     // 大戏台
     private JFrame frame;
 
@@ -38,24 +39,6 @@ public class Drama {
 
 
     public static Boolean isJerryNeedMove = false;
-
-
-
-    // 开戏按钮
-    private JButton button1;
-
-    // 猫的战绩指示牌
-    private JLabel label1;
-    private JTextField field1;
-
-    // 鼠战绩指示牌
-    private JLabel label2;
-    private JTextField field2;
-
-    // 裁判计时器指示牌
-    private JLabel label13;
-    private JTextField field3;
-
 
 
     public Drama () {

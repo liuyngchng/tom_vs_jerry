@@ -22,6 +22,9 @@ public class MyPanel extends JPanel {
     private void button1MouseClicked(MouseEvent e) {
         // TODO add your code here
         this.requestFocus();
+        if(this.button1.getText().equals("开始看戏")) {
+            this.button1.setText("重新开始");
+        }
         Drama.resetDrama(this.label6, this.label5);
     }
 
