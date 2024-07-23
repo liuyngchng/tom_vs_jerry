@@ -7,6 +7,7 @@ import java.security.KeyPair;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class Move  implements Runnable {
 
     // Set of currently pressed keys
-    private static final ConcurrentSkipListSet<MoveElement> pressedKeys = new ConcurrentSkipListSet<>();
+    private static final ConcurrentLinkedQueue<MoveElement> pressedKeys = new ConcurrentLinkedQueue<>();
 
     @Override
     public void run() {
