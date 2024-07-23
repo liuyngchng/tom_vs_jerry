@@ -119,6 +119,7 @@ public class MyPanel extends JPanel {
         //---- textField2 ----
         textField2.setText("30\u79d2");
         textField2.setEditable(false);
+        textField2.setEnabled(false);
         add(textField2);
         textField2.setBounds(495, 25, 80, 30);
 
@@ -130,6 +131,7 @@ public class MyPanel extends JPanel {
         //---- textField3 ----
         textField3.setText("0");
         textField3.setEditable(false);
+        textField3.setEnabled(false);
         add(textField3);
         textField3.setBounds(860, 25, 80, 30);
 
