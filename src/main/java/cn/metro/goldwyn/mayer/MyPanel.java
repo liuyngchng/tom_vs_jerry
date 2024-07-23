@@ -62,7 +62,7 @@ public class MyPanel extends JPanel {
                 break;
         }
         if(Drama.checkIfMeetCounterpart(this.label5, this.label6)) {
-            System.out.println("Tom had caught Jerry, game over");
+            System.out.println("Tom 抓住了 Jerry, 游戏结束");
             Drama.isGameOver = true;
         }
     }

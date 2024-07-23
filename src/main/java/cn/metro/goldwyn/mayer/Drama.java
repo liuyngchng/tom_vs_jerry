@@ -44,11 +44,6 @@ public class Drama {
     public Drama () {
         this.frame = new JFrame(Drama.FRAME_TITLE);
         final MyPanel myPanel = new MyPanel();
-//        int height =  myPanel.getHeight();
-//        int width =  myPanel.getWidth();
-//        Dimension dimension = myPanel.getSize();
-//        Drama.FRAME_HEIGHT = height;
-//        Drama.FRAME_WIDTH = width;
         this.frame.add(myPanel);
         this.frame.setSize(Drama.FRAME_WIDTH, Drama.FRAME_HEIGHT);
         System.out.println("frame width=" + Drama.FRAME_WIDTH + ", height=" + Drama.FRAME_HEIGHT);
@@ -105,23 +100,6 @@ public class Drama {
         tom.setLocation(785, 220);
     }
 
-    public static void checkMoveWho(KeyEvent e) {
-        char key = e.getKeyChar();
-        switch (key) {
-            case 'a':
-            case 's':
-            case 'd':
-            case 'w':
-                System.out.println("move Jerry");
-                break;
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'i':
-                System.out.println("move Tom");
-                break;
-        }
-    }
 
     public static ExecutorService getThreadPool(String threadNamePrefix) {
         final ThreadFactory threadFactory =
