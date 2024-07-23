@@ -1,0 +1,15 @@
+.idea/*
+**/.DS_Store
+**/.cproject
+**/.project
+**/.settings
+**/target
+**/*.out
+**/*.jar
+**/cpp/lib/*
+log/*
+**/*.iml
+**/_*
+native-image/*
+**/*.log
+**/*.o
