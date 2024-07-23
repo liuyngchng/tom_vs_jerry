@@ -25,12 +25,11 @@ public class TimerJob implements Runnable {
                 return;
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             final String txt = String.format("%s秒",30- timediff);
-            this.textField.setEnabled(true);
             this.textField.setText(txt);
             this.textField.setEnabled(false);
             System.out.println("set timer as " + txt);
