@@ -40,6 +40,8 @@ public class Drama {
 
     public static Boolean isJerryNeedMove = false;
 
+    public static long starTime = System.currentTimeMillis();
+
 
     public Drama () {
         this.frame = new JFrame(Drama.FRAME_TITLE);
@@ -96,6 +98,7 @@ public class Drama {
 
     public static void resetDrama(JLabel jerry, JLabel tom) {
         Drama.isGameOver = false;
+        Drama.starTime = System.currentTimeMillis();
         jerry.setLocation(25, 220);
         tom.setLocation(785, 220);
     }

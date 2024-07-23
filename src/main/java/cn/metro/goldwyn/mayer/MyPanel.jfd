@@ -19,6 +19,7 @@ new FormModel {
 				name: "textField1"
 				"text": "0"
 				"enabled": false
+				"editable": false
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 125
 				"y": 20
