@@ -59,18 +59,18 @@ public class Move  implements Runnable {
                 }
                 if (Drama.ifCollideToWall(p)) {
                     System.out.print(
-                            String.format(
-                                    "\r[%s] 大聪明 %s collide to Wall(脑袋撞墙了), (%s, %s) !!!",
-                                    Thread.currentThread().getId(), moveElement.getLabel().getText(), p.getX(), p.getY()
-                            )
+                        String.format(
+                            "\r[%s] 大聪明 %s collide to Wall(脑袋撞墙了), (%s, %s) !!!",
+                            Thread.currentThread().getId(), moveElement.getLabel().getText(), p.getX(), p.getY()
+                        )
                     );
                 } else {
                     moveElement.getLabel().setLocation(p);
                     System.out.print(
-                            String.format(
-                                    "\r[%s]%s moved to(移动到) (%s, %s)",
-                                    Thread.currentThread().getId(), moveElement.getLabel().getText(), p.getX(), p.getY()
-                            )
+                        String.format(
+                            "\r[%s]%s moved to(移动到) (%s, %s)",
+                            Thread.currentThread().getId(), moveElement.getLabel().getText(), p.getX(), p.getY()
+                        )
                     );
                 }
                 it.remove();
