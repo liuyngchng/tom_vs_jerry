@@ -1,6 +1,5 @@
 package cn.metro.goldwyn.mayer;
 
-import com.google.common.base.Strings;
 
 import javax.swing.*;
 import java.awt.*;
