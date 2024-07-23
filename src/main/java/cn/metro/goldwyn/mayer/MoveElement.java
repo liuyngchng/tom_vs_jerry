@@ -2,7 +2,7 @@ package cn.metro.goldwyn.mayer;
 
 import javax.swing.*;
 
-public class MoveElement {
+public class MoveElement implements Comparable {
 
     private Character character;
 
@@ -22,5 +22,20 @@ public class MoveElement {
 
     public void setLabel(JLabel label) {
         this.label = label;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getLabel().hashCode();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        if(this.hashCode() == o.hashCode()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }
