@@ -1,8 +1,13 @@
 package cn.metro.goldwyn.mayer;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * A drama with 2 main characters, a mouse and a cat,
@@ -28,6 +33,13 @@ public class Drama {
     private static String FRAME_TITLE = "The Mouse and Cat Drama (猫鼠大战) ";
 
     public static boolean isGameOver = false;
+
+    public static Boolean isTomNeedMove = false;
+
+
+    public static Boolean isJerryNeedMove = false;
+
+
 
     // 开戏按钮
     private JButton button1;
@@ -73,9 +85,6 @@ public class Drama {
                 }
             }
         });
-
-        Thread thread = new Thread(new Move());
-        thread.start();
         System.out.println("Tom and Jerry are coming(地球上的2个大聪明来咯)!");
     }
 
@@ -129,5 +138,11 @@ public class Drama {
                 System.out.println("move Tom");
                 break;
         }
+    }
+
+    public static ExecutorService getThreadPool(String threadNamePrefix) {
+        final ThreadFactory threadFactory =
+                new ThreadFactoryBuilder().setNameFormat( threadNamePrefix +"%d").build();
+        return Executors.newFixedThreadPool(2, threadFactory);
     }
 }

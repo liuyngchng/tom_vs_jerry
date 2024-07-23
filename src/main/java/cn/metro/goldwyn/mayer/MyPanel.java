@@ -32,6 +32,7 @@ public class MyPanel extends JPanel {
             System.out.println("Game over, nothing can be done!");
             return;
         }
+        MoveJob moveJob;
         char key = e.getKeyChar();
         switch (key) {
             case 0x20:
@@ -42,15 +43,19 @@ public class MyPanel extends JPanel {
             case 's':
             case 'd':
             case 'w':
-//                Drama.move(e, this.label6);
-                Move.action(e, this.label6);
+                Drama.isJerryNeedMove = true;
+                moveJob = new MoveJob(e, this.label6);
+                Drama.getThreadPool("jerry_job_").submit(moveJob);
+//                MoveTom.action(e, this.label6);
                 break;
             case 'j':
             case 'k':
             case 'l':
             case 'i':
-//                Drama.move(e, this.label5);
-                Move.action(e, this.label5);
+                Drama.isTomNeedMove = true;
+                moveJob = new MoveJob(e, this.label5);
+                Drama.getThreadPool("tom_job_").submit(moveJob);
+//                MoveTom.action(e, this.label5);
                 break;
         }
         if(Drama.checkIfMeetCounterpart(this.label5, this.label6)) {
@@ -61,7 +66,7 @@ public class MyPanel extends JPanel {
 
     private void thisKeyReleased(KeyEvent e) {
         // TODO add your code here
-        Move.releaseKey(e);
+        MoveJob.stopMove(e);
     }
 
     private void initComponents() {
