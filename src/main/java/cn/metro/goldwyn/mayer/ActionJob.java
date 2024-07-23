@@ -7,14 +7,14 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
- * 控制图形按照键盘的输入控制进行移动
+ * 控制图形按照键盘的输入控制进行角色的动作
  */
-public class MoveJob implements Runnable {
+public class ActionJob implements Runnable {
 
     private KeyEvent keyEvent;
     private JLabel label;
 
-    public MoveJob(KeyEvent keyEvent, JLabel label) {
+    public ActionJob(KeyEvent keyEvent, JLabel label) {
         this.keyEvent = keyEvent;
         this.label = label;
     }

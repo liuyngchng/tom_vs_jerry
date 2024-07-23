@@ -86,11 +86,12 @@ public class Drama {
      * @param label2
      * @return
      */
-    public static boolean checkIfMeetCounterpart(JLabel label1, JLabel label2) {
+    public static boolean checkIfMeetCounterpart(JLabel label1, JLabel label2, JButton button) {
         Point point1 = label1.getLocation();
         Point point2 = label2.getLocation();
         if (Math.abs(point1.getX() - point2.getX()) < Drama.MEET_EACH_OTHER
                 && Math.abs(point1.getY() - point2.getY()) < Drama.MEET_EACH_OTHER) {
+            Drama.resetStartButton(button);
             return true;
         }
         return false;
@@ -108,5 +109,10 @@ public class Drama {
         final ThreadFactory threadFactory =
                 new ThreadFactoryBuilder().setNameFormat( threadNamePrefix +"%d").build();
         return Executors.newFixedThreadPool(2, threadFactory);
+    }
+
+    public static void resetStartButton(JButton startButton) {
+        startButton.setText("重新开始");
+        startButton.setEnabled(true);
     }
 }

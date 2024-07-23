@@ -20,8 +20,7 @@ public class TimerJob implements Runnable {
             if(timediff > 30 || Drama.isGameOver) {
                 System.out.println("timer = 30s, game over");
                 Drama.isGameOver = true;
-                this.button.setText("重新开始");
-                this.button.setEnabled(true);
+                Drama.resetStartButton(this.button);
                 return;
             }
             try {

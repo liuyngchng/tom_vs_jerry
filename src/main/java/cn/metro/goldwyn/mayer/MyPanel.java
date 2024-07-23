@@ -35,7 +35,7 @@ public class MyPanel extends JPanel {
             System.out.println("Game over, nothing can be done!");
             return;
         }
-        MoveJob moveJob;
+        ActionJob actionJob;
         char key = e.getKeyChar();
         switch (key) {
             case 0x20:
@@ -47,8 +47,8 @@ public class MyPanel extends JPanel {
             case 'd':
             case 'w':
                 Drama.isJerryNeedMove = true;
-                moveJob = new MoveJob(e, this.label6);
-                Drama.getThreadPool("jerry_job_").submit(moveJob);
+                actionJob = new ActionJob(e, this.label6);
+                Drama.getThreadPool("jerry_job_").submit(actionJob);
 //                MoveTom.action(e, this.label6);
                 break;
             case 'j':
@@ -56,12 +56,12 @@ public class MyPanel extends JPanel {
             case 'l':
             case 'i':
                 Drama.isTomNeedMove = true;
-                moveJob = new MoveJob(e, this.label5);
-                Drama.getThreadPool("tom_job_").submit(moveJob);
+                actionJob = new ActionJob(e, this.label5);
+                Drama.getThreadPool("tom_job_").submit(actionJob);
 //                MoveTom.action(e, this.label5);
                 break;
         }
-        if(Drama.checkIfMeetCounterpart(this.label5, this.label6)) {
+        if(Drama.checkIfMeetCounterpart(this.label5, this.label6, this.button1)) {
             System.out.println("Tom 抓住了 Jerry, 游戏结束");
             Drama.isGameOver = true;
         }
@@ -69,7 +69,7 @@ public class MyPanel extends JPanel {
 
     private void thisKeyReleased(KeyEvent e) {
         // TODO add your code here
-        MoveJob.stopMove(e);
+        ActionJob.stopMove(e);
     }
 
     private void initComponents() {
