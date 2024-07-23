@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -85,16 +84,20 @@ public class Drama {
 
     /**
      * 检测Tom 和 Jerry是否相遇了
-     * @param label1
-     * @param label2
+     * @param actorLabel1
+     * @param actorLabel2
      * @return
      */
-    public static boolean checkIfMeetCounterpart(JLabel label1, JLabel label2, JButton button) {
-        Point point1 = label1.getLocation();
-        Point point2 = label2.getLocation();
+    public static boolean checkIfMeetCounterpart(JLabel actorLabel1, JLabel actorLabel2, JButton button, JTextField tomTextField) {
+        Point point1 = actorLabel1.getLocation();
+        Point point2 = actorLabel2.getLocation();
         if (Math.abs(point1.getX() - point2.getX()) < Drama.MEET_EACH_OTHER
                 && Math.abs(point1.getY() - point2.getY()) < Drama.MEET_EACH_OTHER) {
             Drama.resetStartButton(button);
+            Integer tomScore = Integer.parseInt(tomTextField.getText());
+            tomScore++;
+            tomTextField.setText(tomScore.toString());
+            System.out.println("Tom 和 Jerry 会面了， tom 加分");
             return true;
         }
         return false;

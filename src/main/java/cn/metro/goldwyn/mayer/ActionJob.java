@@ -70,9 +70,9 @@ public class ActionJob implements Runnable {
                 }
             } else {
                 this.label.setLocation(p);
-                System.out.print(
+                System.out.println(
                     String.format(
-                        "\r[%s]%s 移动到 (%s, %s)",
+                        "[%s]%s 移动到 (%s, %s)",
                         Thread.currentThread().getId(), this.label.getText(), p.getX(), p.getY()
                     )
                 );
