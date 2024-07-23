@@ -81,7 +81,7 @@ public class MyPanel extends JPanel {
         setLayout(null);
 
         //---- label1 ----
-        label1.setText("\u732b\u5f97\u5206\uff1a");
+        label1.setText("Jerry \u5206\u6570\uff1a");
         add(label1);
         label1.setBounds(new Rectangle(new Point(20, 25), label1.getPreferredSize()));
 
@@ -89,7 +89,7 @@ public class MyPanel extends JPanel {
         textField1.setText("0");
         textField1.setEnabled(false);
         add(textField1);
-        textField1.setBounds(95, 20, 80, 30);
+        textField1.setBounds(125, 20, 80, 30);
 
         //---- label2 ----
         label2.setText("\u8ba1\u65f6\u5668\uff1a");
@@ -103,7 +103,7 @@ public class MyPanel extends JPanel {
         textField2.setBounds(495, 25, 80, 30);
 
         //---- label3 ----
-        label3.setText("\u9f20\u5f97\u5206\uff1a");
+        label3.setText("Tom \u5206\u6570\uff1a");
         add(label3);
         label3.setBounds(new Rectangle(new Point(760, 25), label3.getPreferredSize()));
 
@@ -111,7 +111,7 @@ public class MyPanel extends JPanel {
         textField3.setText("0");
         textField3.setEditable(false);
         add(textField3);
-        textField3.setBounds(855, 25, 80, 30);
+        textField3.setBounds(860, 25, 80, 30);
 
         //---- button1 ----
         button1.setText("\u5f00\u59cb\u770b\u620f");
