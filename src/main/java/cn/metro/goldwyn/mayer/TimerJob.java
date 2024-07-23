@@ -5,33 +5,45 @@ import java.util.Date;
 
 public class TimerJob implements Runnable {
 
-    private JTextField textField;
+    private JTextField jerryScoreTextField;
+
+    private JTextField timerTextField;
 
     private JButton button;
 
-    public TimerJob(JTextField textField, JButton button) {
-        this.textField = textField;
+    public TimerJob(JTextField jerryScoreTextField, JTextField timerTextField, JButton button) {
+        this.jerryScoreTextField = jerryScoreTextField;
+        this.timerTextField = timerTextField;
         this.button = button;
     }
     @Override
     public void run() {
         while (true) {
-            int timediff = (int)(System.currentTimeMillis() - Drama.starTime) /1000;
-            if(timediff > 30 || Drama.isGameOver) {
+            if(Drama.isGameOver) {
                 System.out.println("timer = 30s, game over");
-                Drama.isGameOver = true;
                 Drama.resetStartButton(this.button);
                 return;
             }
+            int timediff = (int)(System.currentTimeMillis() - Drama.starTime) /1000;
+            if(timediff > Drama.JERRY_ESCAPE_TIME) {
+                System.out.println(String.format("timer = %s秒, jerry 加分, 重置计时器", Drama.JERRY_ESCAPE_TIME));
+                Integer score = Integer.parseInt(this.jerryScoreTextField.getText());
+                score++;
+                this.jerryScoreTextField.setText(score.toString());
+                this.timerTextField.setText(String.format("%s秒", Drama.JERRY_ESCAPE_TIME));
+                Drama.starTime = System.currentTimeMillis();
+            }
+
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            final String txt = String.format("%s秒",30- timediff);
-            this.textField.setText(txt);
-            this.textField.setEnabled(false);
-            System.out.println("set timer as " + txt);
+            final String txt = String.format("%s秒",Drama.JERRY_ESCAPE_TIME- timediff);
+            if (!this.timerTextField.getText().equals(txt)) {
+                this.timerTextField.setText(txt);
+                System.out.println("set timer as " + txt);
+            }
         }
     }
 }

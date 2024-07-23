@@ -25,7 +25,7 @@ public class MyPanel extends JPanel {
         this.button1.setEnabled(false);
         this.button1.setText("游戏运行中");
         Drama.resetDrama(this.label6, this.label5);
-        Drama.getThreadPool("timer_job_").submit(new TimerJob(this.textField2, this.button1));
+        Drama.getThreadPool("timer_job_").submit(new TimerJob(this.textField1, this.textField2, this.button1));
     }
 
     private void thisKeyPressed(KeyEvent e) {
@@ -117,7 +117,7 @@ public class MyPanel extends JPanel {
         label2.setBounds(new Rectangle(new Point(415, 25), label2.getPreferredSize()));
 
         //---- textField2 ----
-        textField2.setText("30\u79d2");
+        textField2.setText("15\u79d2");
         textField2.setEditable(false);
         textField2.setEnabled(false);
         add(textField2);

@@ -31,6 +31,9 @@ public class Drama {
     // 互相撞上的条件
     private static int MEET_EACH_OTHER = 50;
 
+    // 规定的时间内 tom 没有成功抓捕，则 jerry得分
+    public static int JERRY_ESCAPE_TIME = 15;
+
     private static String FRAME_TITLE = "The Mouse and Cat Drama (猫鼠大战) ";
 
     public static boolean isGameOver = false;
