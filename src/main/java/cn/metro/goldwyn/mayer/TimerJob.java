@@ -19,7 +19,7 @@ public class TimerJob implements Runnable {
     public void run() {
         while (true) {
             if(Drama.isGameOver) {
-                System.out.println("timer = 30s, game over");
+                System.out.println(String.format("timer = %ss, game over", Drama.JERRY_ESCAPE_TIME));
                 Drama.resetGame(this.button, this.timerTextField);
                 return;
             }

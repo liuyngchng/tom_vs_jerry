@@ -31,7 +31,7 @@ public class Drama {
     private static int MEET_EACH_OTHER = 50;
 
     // 规定的时间内 tom 没有成功抓捕，则 jerry得分
-    public static int JERRY_ESCAPE_TIME = 15;
+    public static Integer JERRY_ESCAPE_TIME = 15;
 
     private static String FRAME_TITLE = "The Mouse and Cat Drama (猫鼠大战) ";
 
@@ -122,6 +122,7 @@ public class Drama {
     public static void resetGame(JButton startButton, JTextField timerTextField) {
         timerTextField.setEditable(true);
         timerTextField.setEnabled(true);
+        timerTextField.setText(Drama.JERRY_ESCAPE_TIME.toString());
         startButton.setText("重新开始");
         startButton.setEnabled(true);
     }
