@@ -56,20 +56,6 @@ public class Drama {
         this.frame.setVisible(true);
     }
 
-    public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        new Drama();
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    new Drama();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-        System.out.println("Tom and Jerry are coming(地球上的2个大聪明来咯)!");
-    }
 
     /**
      * 检测是否撞墙
@@ -121,5 +107,20 @@ public class Drama {
     public static void resetStartButton(JButton startButton) {
         startButton.setText("重新开始");
         startButton.setEnabled(true);
+    }
+
+    public static void main(String[] args) throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        new Drama();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Drama();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        System.out.println("地球上的2个大聪明 Tom 和 Jerry 来咯!");
     }
 }

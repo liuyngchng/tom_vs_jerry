@@ -30,21 +30,33 @@ public class ActionJob implements Runnable {
             switch (this.keyEvent.getKeyChar()) {
                 case 'a':
                 case 'j':
+
+                case 'A':
+                case 'J':
                     p = this.label.getLocation();
                     p.setLocation(p.getX() - Drama.MOVE_PIXEL, p.getY());
                     break;
                 case 'd':
                 case 'l':
+
+                case 'D':
+                case 'L':
                     p = this.label.getLocation();
                     p.setLocation(p.getX() + Drama.MOVE_PIXEL, p.getY());
                     break;
                 case 's':
                 case 'k':
+
+                case 'S':
+                case 'K':
                     p = this.label.getLocation();
                     p.setLocation(p.getX(), p.getY() + Drama.MOVE_PIXEL);
                     break;
                 case 'w':
                 case 'i':
+
+                case 'W':
+                case 'I':
                     p = this.label.getLocation();
                     p.setLocation(p.getX(), p.getY() - Drama.MOVE_PIXEL);
                     break;

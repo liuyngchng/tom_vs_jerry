@@ -19,33 +19,51 @@ public class MyPanel extends JPanel {
         initComponents();
     }
 
+    private void startGame() {
+        System.out.println("开始游戏");
+        this.requestFocus();
+        this.label5.setVisible(true);       // Jerry 登场
+        this.label6.setVisible(true);
+        this.button1.setEnabled(false);     // 按键变灰，不可点击
+        this.button1.setText("游戏运行中");   // Tom 登场
+        Drama.resetDrama(this.label6, this.label5);
+        Drama.getThreadPool("timer_job_").submit(
+                new TimerJob(this.textField1, this.textField2, this.button1)
+        );
+    }
+
     private void button1MouseClicked(MouseEvent e) {
         // TODO add your code here
-        this.requestFocus();
-        this.button1.setEnabled(false);
-        this.button1.setText("游戏运行中");
-        Drama.resetDrama(this.label6, this.label5);
-        Drama.getThreadPool("timer_job_").submit(new TimerJob(this.textField1, this.textField2, this.button1));
+       this.startGame();
     }
 
     private void thisKeyPressed(KeyEvent e) {
         // TODO add your code here
 //        System.out.println(String.format("key %c pressed ", e.getKeyCode()));
+        char key = e.getKeyChar();
+
         if (Drama.isGameOver) {
+            switch (key) {
+                case 0x20:
+//                case 'r':
+                    this.startGame();
+                    break;
+            }
             System.out.println("Game over, nothing can be done!");
             return;
         }
         ActionJob actionJob;
-        char key = e.getKeyChar();
+
         switch (key) {
-            case 0x20:
-                System.out.println("key space pressed");
-                this.requestFocus();
-                break;
             case 'a':
             case 's':
             case 'd':
             case 'w':
+
+            case 'A':
+            case 'S':
+            case 'D':
+            case 'W':
                 Drama.isJerryNeedMove = true;
                 actionJob = new ActionJob(e, this.label6);
                 Drama.getThreadPool("jerry_job_").submit(actionJob);
@@ -55,6 +73,11 @@ public class MyPanel extends JPanel {
             case 'k':
             case 'l':
             case 'i':
+
+            case 'J':
+            case 'K':
+            case 'L':
+            case 'I':
                 Drama.isTomNeedMove = true;
                 actionJob = new ActionJob(e, this.label5);
                 Drama.getThreadPool("tom_job_").submit(actionJob);
@@ -154,12 +177,14 @@ public class MyPanel extends JPanel {
         //---- label5 ----
         label5.setText("tom");
         label5.setIcon(new ImageIcon(getClass().getResource("/tom.png")));
+        label5.setVisible(false);
         add(label5);
         label5.setBounds(785, 220, 100, 100);
 
         //---- label6 ----
         label6.setText("jerry");
         label6.setIcon(new ImageIcon(getClass().getResource("/jerry.png")));
+        label6.setVisible(false);
         add(label6);
         label6.setBounds(25, 220, 70, 100);
 

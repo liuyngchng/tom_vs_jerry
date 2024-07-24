@@ -85,6 +85,7 @@ new FormModel {
 				name: "label5"
 				"text": "tom"
 				"icon": new com.jformdesigner.model.SwingIcon( 0, "/tom.png" )
+				"visible": false
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 785
 				"y": 220
@@ -95,6 +96,7 @@ new FormModel {
 				name: "label6"
 				"text": "jerry"
 				"icon": new com.jformdesigner.model.SwingIcon( 0, "/jerry.png" )
+				"visible": false
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 25
 				"y": 220
