@@ -12,7 +12,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
-    <orderEntry type="library" name="Maven: me.saharnooby:qoi-java-awt:1.2.1" level="project" />
-    <orderEntry type="library" name="Maven: me.saharnooby:qoi-java:1.2.1" level="project" />
   </component>
 </module>

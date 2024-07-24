@@ -18,11 +18,6 @@
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
-        <dependency>
-            <groupId>me.saharnooby</groupId>
-            <artifactId>qoi-java-awt</artifactId>
-            <version>1.2.1</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.oracle</groupId>-->
 <!--            <artifactId>java-awt</artifactId>-->
