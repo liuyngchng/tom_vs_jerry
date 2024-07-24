@@ -58,15 +58,16 @@ public class Drama {
 
     public static void main(String[] args) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Drama();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        new Drama();
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new Drama();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
         System.out.println("Tom and Jerry are coming(地球上的2个大聪明来咯)!");
     }
 

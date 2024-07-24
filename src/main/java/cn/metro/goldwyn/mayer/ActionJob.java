@@ -22,7 +22,7 @@ public class ActionJob implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -68,6 +68,9 @@ public class ActionJob implements Runnable {
                         break;
                 }
             } else {
+                if(Drama.isGameOver) {
+                    return;
+                }
                 this.label.setLocation(p);
                 System.out.println(
                     String.format(
