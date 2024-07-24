@@ -135,7 +135,7 @@ public class MyPanel extends JPanel {
         textField1.setEnabled(false);
         textField1.setEditable(false);
         add(textField1);
-        textField1.setBounds(125, 20, 80, 30);
+        textField1.setBounds(125, 20, 55, 30);
 
         //---- label2 ----
         label2.setText("\u8ba1\u65f6\u5668\uff1a");
@@ -157,7 +157,7 @@ public class MyPanel extends JPanel {
         textField3.setEditable(false);
         textField3.setEnabled(false);
         add(textField3);
-        textField3.setBounds(860, 20, 80, 30);
+        textField3.setBounds(860, 20, 55, 30);
 
         //---- button1 ----
         button1.setText("\u5f00\u59cb\u6e38\u620f");
