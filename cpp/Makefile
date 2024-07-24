@@ -4,7 +4,7 @@ CM_OBJ:= gtk_test.o
 
 all: obj _game
 obj:gtk_test.c
-	${CC} -c -g -Wpedantic *.c `pkg-config --cflags --libs gtk+-2.0`
+	${CC} -c -g -Wall *.c `pkg-config --cflags --libs gtk+-2.0`
 _game: gtk_test.o
 	${CC} -g ${CFLAGS} -o _game gtk_test.o `pkg-config --cflags --libs gtk+-2.0`
 clean:
