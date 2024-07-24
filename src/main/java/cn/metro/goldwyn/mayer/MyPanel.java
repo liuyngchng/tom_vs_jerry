@@ -71,7 +71,6 @@ public class MyPanel extends JPanel {
                 Drama.isJerryNeedMove = true;
                 actionJob = new ActionJob(e, this.label6);
                 Drama.getThreadPool("jerry_job_").submit(actionJob);
-//                MoveTom.action(e, this.label6);
                 break;
             case 'j':
             case 'k':
@@ -85,7 +84,6 @@ public class MyPanel extends JPanel {
                 Drama.isTomNeedMove = true;
                 actionJob = new ActionJob(e, this.label5);
                 Drama.getThreadPool("tom_job_").submit(actionJob);
-//                MoveTom.action(e, this.label5);
                 break;
         }
         if(Drama.checkIfMeetCounterpart(this.label5, this.label6, this.button1, this.textField3, this.textField2)) {
@@ -130,7 +128,7 @@ public class MyPanel extends JPanel {
         //---- label1 ----
         label1.setText("Jerry \u5206\u6570\uff1a");
         add(label1);
-        label1.setBounds(new Rectangle(new Point(20, 25), label1.getPreferredSize()));
+        label1.setBounds(20, 20, 100, 30);
 
         //---- textField1 ----
         textField1.setText("0");
@@ -142,27 +140,27 @@ public class MyPanel extends JPanel {
         //---- label2 ----
         label2.setText("\u8ba1\u65f6\u5668\uff1a");
         add(label2);
-        label2.setBounds(new Rectangle(new Point(415, 25), label2.getPreferredSize()));
+        label2.setBounds(415, 20, 100, 30);
 
         //---- textField2 ----
         textField2.setText("15");
         add(textField2);
-        textField2.setBounds(495, 25, 50, 30);
+        textField2.setBounds(495, 20, 50, 30);
 
         //---- label3 ----
         label3.setText("Tom \u5206\u6570\uff1a");
         add(label3);
-        label3.setBounds(new Rectangle(new Point(760, 25), label3.getPreferredSize()));
+        label3.setBounds(760, 20, 100, 30);
 
         //---- textField3 ----
         textField3.setText("0");
         textField3.setEditable(false);
         textField3.setEnabled(false);
         add(textField3);
-        textField3.setBounds(860, 25, 80, 30);
+        textField3.setBounds(860, 20, 80, 30);
 
         //---- button1 ----
-        button1.setText("\u5f00\u59cb\u770b\u620f");
+        button1.setText("\u5f00\u59cb\u6e38\u620f");
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -170,12 +168,12 @@ public class MyPanel extends JPanel {
             }
         });
         add(button1);
-        button1.setBounds(435, 75, 130, 40);
+        button1.setBounds(435, 60, 130, 40);
 
         //---- label4 ----
         label4.setText(" Powerd by Metro Goldwyn Mayer Co. Ltd. CN");
         add(label4);
-        label4.setBounds(280, 570, 400, 30);
+        label4.setBounds(285, 505, 400, 30);
 
         //---- label5 ----
         label5.setText("tom");
@@ -196,7 +194,7 @@ public class MyPanel extends JPanel {
         textField4.setEditable(false);
         textField4.setEnabled(false);
         add(textField4);
-        textField4.setBounds(545, 25, 50, 30);
+        textField4.setBounds(545, 20, 50, 30);
 
         {
             // compute preferred size
