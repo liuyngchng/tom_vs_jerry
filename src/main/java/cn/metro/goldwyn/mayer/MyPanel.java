@@ -41,10 +41,22 @@ public class MyPanel extends JPanel {
        this.startGame();
     }
 
+    private void button1KeyPressed(KeyEvent e) {
+        // TODO add your code here
+        if (e.getKeyCode() == 10) {
+            this.startGame();
+        }
+
+    }
+
     private void thisKeyPressed(KeyEvent e) {
         // TODO add your code here
 //        System.out.println(String.format("key %c pressed ", e.getKeyCode()));
         char key = e.getKeyChar();
+        int keyCode = e.getKeyCode();
+        switch (e.getKeyCode()) {
+
+        }
 
         if (Drama.isGameOver) {
             switch (key) {
@@ -96,6 +108,8 @@ public class MyPanel extends JPanel {
         // TODO add your code here
         ActionJob.stopMove(e);
     }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -165,6 +179,12 @@ public class MyPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 button1MouseClicked(e);
+            }
+        });
+        button1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                button1KeyPressed(e);
             }
         });
         add(button1);
