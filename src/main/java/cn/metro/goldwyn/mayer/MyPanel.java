@@ -20,16 +20,20 @@ public class MyPanel extends JPanel {
     }
 
     private void startGame() {
-        System.out.println("开始游戏");
         this.requestFocus();
-        this.label5.setVisible(true);       // Jerry 登场
-        this.label6.setVisible(true);
-        this.button1.setEnabled(false);     // 按键变灰，不可点击
-        this.button1.setText("游戏运行中");   // Tom 登场
-        Drama.resetDrama(this.label6, this.label5);
-        Drama.getThreadPool("timer_job_").submit(
-                new TimerJob(this.textField1, this.textField2, this.button1)
-        );
+        int timer = 0;
+        try {
+            timer = Integer.parseInt(this.textField2.getText());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                "请输入数字计时内容", "输入内容错误",
+                JOptionPane.ERROR_MESSAGE
+            );
+            throw new RuntimeException("计时器输入错误");
+
+        }
+         Drama.startDrama(this.label6, this.label5, this.textField2, this.button1, this.textField1);
+
     }
 
     private void button1MouseClicked(MouseEvent e) {
@@ -84,7 +88,7 @@ public class MyPanel extends JPanel {
 //                MoveTom.action(e, this.label5);
                 break;
         }
-        if(Drama.checkIfMeetCounterpart(this.label5, this.label6, this.button1, this.textField3)) {
+        if(Drama.checkIfMeetCounterpart(this.label5, this.label6, this.button1, this.textField3, this.textField2)) {
             Drama.isGameOver = true;
             System.out.println("Tom 抓住了 Jerry, 游戏结束");
         }
@@ -107,6 +111,7 @@ public class MyPanel extends JPanel {
         label4 = new JLabel();
         label5 = new JLabel();
         label6 = new JLabel();
+        textField4 = new JTextField();
 
         //======== this ========
         setPreferredSize(new Dimension(1400, 600));
@@ -140,11 +145,9 @@ public class MyPanel extends JPanel {
         label2.setBounds(new Rectangle(new Point(415, 25), label2.getPreferredSize()));
 
         //---- textField2 ----
-        textField2.setText("15\u79d2");
-        textField2.setEditable(false);
-        textField2.setEnabled(false);
+        textField2.setText("15");
         add(textField2);
-        textField2.setBounds(495, 25, 80, 30);
+        textField2.setBounds(495, 25, 50, 30);
 
         //---- label3 ----
         label3.setText("Tom \u5206\u6570\uff1a");
@@ -188,6 +191,13 @@ public class MyPanel extends JPanel {
         add(label6);
         label6.setBounds(25, 220, 70, 100);
 
+        //---- textField4 ----
+        textField4.setText("\u79d2");
+        textField4.setEditable(false);
+        textField4.setEnabled(false);
+        add(textField4);
+        textField4.setBounds(545, 25, 50, 30);
+
         {
             // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -216,5 +226,6 @@ public class MyPanel extends JPanel {
     private JLabel label4;
     private JLabel label5;
     private JLabel label6;
+    private JTextField textField4;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

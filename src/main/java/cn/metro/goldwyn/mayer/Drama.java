@@ -75,12 +75,13 @@ public class Drama {
      * @param actorLabel2
      * @return
      */
-    public static boolean checkIfMeetCounterpart(JLabel actorLabel1, JLabel actorLabel2, JButton button, JTextField tomTextField) {
+    public static boolean checkIfMeetCounterpart(JLabel actorLabel1, JLabel actorLabel2, JButton startButton,
+                                                 JTextField tomTextField, JTextField timerTextField) {
         Point point1 = actorLabel1.getLocation();
         Point point2 = actorLabel2.getLocation();
         if (Math.abs(point1.getX() - point2.getX()) < Drama.MEET_EACH_OTHER
                 && Math.abs(point1.getY() - point2.getY()) < Drama.MEET_EACH_OTHER) {
-            Drama.resetStartButton(button);
+            Drama.resetGame(startButton, timerTextField);
             Integer tomScore = Integer.parseInt(tomTextField.getText());
             tomScore++;
             tomTextField.setText(tomScore.toString());
@@ -90,11 +91,25 @@ public class Drama {
         return false;
     }
 
-    public static void resetDrama(JLabel jerry, JLabel tom) {
+    public static void startDrama(JLabel jerry, JLabel tom, JTextField timerField,
+        JButton startButton, JTextField jerryScoreTextField) {
+
+        Drama.JERRY_ESCAPE_TIME = Integer.parseInt(timerField.getText());
+        System.out.println("开始游戏");
         Drama.isGameOver = false;
         Drama.starTime = System.currentTimeMillis();
         jerry.setLocation(25, 220);
         tom.setLocation(785, 220);
+        jerry.setVisible(true);         // Jerry 登场
+        tom.setVisible(true);           // Tom 登场
+        timerField.setEnabled(false);
+        timerField.setEditable(false);
+
+        startButton.setEnabled(false);     // 按键变灰，不可点击
+        startButton.setText("游戏运行中");   // 设置游戏状态为进行中
+        Drama.getThreadPool("timer_job_").submit(
+                new TimerJob(jerryScoreTextField, timerField, startButton)
+        );
     }
 
 
@@ -104,7 +119,9 @@ public class Drama {
         return Executors.newFixedThreadPool(2, threadFactory);
     }
 
-    public static void resetStartButton(JButton startButton) {
+    public static void resetGame(JButton startButton, JTextField timerTextField) {
+        timerTextField.setEditable(true);
+        timerTextField.setEnabled(true);
         startButton.setText("重新开始");
         startButton.setEnabled(true);
     }

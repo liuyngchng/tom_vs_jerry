@@ -1,7 +1,6 @@
 package cn.metro.goldwyn.mayer;
 
 import javax.swing.*;
-import java.util.Date;
 
 public class TimerJob implements Runnable {
 
@@ -21,7 +20,7 @@ public class TimerJob implements Runnable {
         while (true) {
             if(Drama.isGameOver) {
                 System.out.println("timer = 30s, game over");
-                Drama.resetStartButton(this.button);
+                Drama.resetGame(this.button, this.timerTextField);
                 return;
             }
             int timediff = (int)(System.currentTimeMillis() - Drama.starTime) /1000;
@@ -30,7 +29,7 @@ public class TimerJob implements Runnable {
                 Integer score = Integer.parseInt(this.jerryScoreTextField.getText());
                 score++;
                 this.jerryScoreTextField.setText(score.toString());
-                this.timerTextField.setText(String.format("%s秒", Drama.JERRY_ESCAPE_TIME));
+                this.timerTextField.setText(String.format("%s", Drama.JERRY_ESCAPE_TIME));
                 Drama.starTime = System.currentTimeMillis();
             }
 
@@ -39,7 +38,7 @@ public class TimerJob implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            final String txt = String.format("%s秒",Drama.JERRY_ESCAPE_TIME- timediff);
+            final String txt = String.format("%s",Drama.JERRY_ESCAPE_TIME- timediff);
             if (!this.timerTextField.getText().equals(txt)) {
                 this.timerTextField.setText(txt);
                 System.out.println("set timer as " + txt);

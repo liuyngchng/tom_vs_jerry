@@ -35,13 +35,11 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField2"
-				"text": "15秒"
-				"editable": false
-				"enabled": false
+				"text": "15"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 495
 				"y": 25
-				"width": 80
+				"width": 50
 				"height": 30
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -102,6 +100,17 @@ new FormModel {
 				"y": 220
 				"height": 100
 				"width": 70
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField4"
+				"text": "秒"
+				"editable": false
+				"enabled": false
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 545
+				"y": 25
+				"width": 50
+				"height": 30
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 15, 5 )
