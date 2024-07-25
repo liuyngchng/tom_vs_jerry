@@ -30,8 +30,8 @@ int main(int argc, char*argv[]) {
     g_signal_connect(window, "destroy", G_CALLBACK(destroy), NULL);
     g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), NULL);
 
-    gtk_window_set_title(GTK_WINDOW(window),"Tom VS Jerry（猫鼠大战）");
-    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+    gtk_window_set_title(GTK_WINDOW(window),"Hello windows");
+    gtk_window_set_default_size(GTK_WINDOW(window), 200, 100);
     gtk_container_set_border_width(GTK_CONTAINER(window), 5);
     box1 = gtk_hbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER (window), box1);
@@ -40,7 +40,7 @@ int main(int argc, char*argv[]) {
     g_signal_connect (button, "clicked", G_CALLBACK(callback), (gpointer)"button 1");
     //点击后会导致父窗体推出
 //    g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_widget_destroy), window);
-    gtk_container_add(GTK_CONTAINER(window), button);
+//    gtk_container_add(GTK_CONTAINER(window), button);
     gtk_box_pack_start(GTK_BOX(box1), button, TRUE, TRUE, 0);
 
 
