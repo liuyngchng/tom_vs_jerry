@@ -1,4 +1,7 @@
 /**
+ *
+ * Use box to pack widgets
+ *
  * gcc -o gtk_test gtk_test.c `pkg-config --cflags --libs gtk+-2.0`
  */
 #include <gtk/gtk.h>
