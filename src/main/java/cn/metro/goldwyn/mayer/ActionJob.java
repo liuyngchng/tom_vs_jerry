@@ -61,7 +61,7 @@ public class ActionJob implements Runnable {
                     p.setLocation(p.getX(), p.getY() - Drama.MOVE_PIXEL);
                     break;
             }
-            if (Drama.ifCollideToWall(p)) {
+            if (Drama.ifCollideToWall(p, this.label)) {
                 System.out.print(
                     String.format(
                         "\r[%s] 大聪明 %s 脑袋撞墙了, (%s, %s) !!!",

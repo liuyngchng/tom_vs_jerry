@@ -60,10 +60,16 @@ public class Drama {
     /**
      * 检测是否撞墙
      */
-    public static boolean ifCollideToWall(Point p) {
-        if (p.getY() > Drama.FRAME_HEIGHT -120 || p.getY() < 120) {
+    public static boolean ifCollideToWall(Point p, JLabel label) {
+        Dimension dimension = label.getSize();
+        System.out.println(
+            String.format("%s, %s, %s", label.getText(),
+                label.getSize().getWidth(), label.getSize().getHeight()
+            )
+        );
+        if (p.getY() + label.getHeight() > Drama.FRAME_HEIGHT -40 || p.getY() < 100) {
             return true;
-        } else if (p.getX() > Drama.FRAME_WIDTH - 100 || p.getX() < 5) {
+        } else if (p.getX() + label.getWidth() > Drama.FRAME_WIDTH || p.getX() < 0) {
             return true;
         }
         return false;
