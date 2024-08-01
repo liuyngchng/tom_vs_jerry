@@ -184,7 +184,7 @@ void* mv_role(void* tdt) {
 		if(action->key) {
 			mv_role_by_key_press(action->role, action->key);
 		}
-		usleep(_MV_INTERVAL_MS);
+		g_usleep(_MV_INTERVAL_MS);
 	}
 	return NULL;
 }
@@ -195,7 +195,7 @@ void* mv_tom(void* tdt) {
 		if(tom_key) {
 			mv_role_by_key_press(1, tom_key);
 		}
-		usleep(_MV_INTERVAL_MS);
+		g_usleep(_MV_INTERVAL_MS);
 	}
 	return NULL;
 }
@@ -208,7 +208,7 @@ void* mv_jerry(void* tdt) {
 		} else {
 //			g_print("do_nothing_for_jerry_action\n");
 		}
-		usleep(_MV_INTERVAL_MS);
+		g_usleep(_MV_INTERVAL_MS);
 	}
 	return NULL;
 }
@@ -292,13 +292,15 @@ gboolean on_key_released(GtkWidget *widget,
 int main(int argc, char *argv[]) {
 	jerry_key = 0;
 	tom_key = 0;
-	pthread_t t1;
-	pthread_create(&t1, NULL, &mv_jerry, NULL);
-	pthread_detach(t1);
-
-	pthread_t t2;
-	pthread_create(&t2, NULL, &mv_tom, NULL);
-	pthread_detach(t2);
+	g_thread_new("jerry_t", &mv_jerry, NULL);
+	g_thread_new("jerry_t", &mv_tom, NULL);
+//	pthread_t t1;
+//	pthread_create(&t1, NULL, &mv_jerry, NULL);
+//	pthread_detach(t1);
+//
+//	pthread_t t2;
+//	pthread_create(&t2, NULL, &mv_tom, NULL);
+//	pthread_detach(t2);
 
     gtk_init(&argc, &argv);
 
