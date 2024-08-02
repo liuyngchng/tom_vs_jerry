@@ -76,12 +76,19 @@ static GtkWidget *pic_label_box( gchar     *pic_filename,
     return box;
 }
 
+void refresh_status(gchar *buff) {
+	if(NULL == buff || NULL == status_bar) {
+		return;
+	}
+	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+//	g_printf("g_free(%p)\n", buff);
+	g_free (buff);
+}
+
 void on_button_clicked(GtkButton *button, gpointer data) {
-    gchar *buff;
     static int count = 1;
-    buff = g_strdup_printf ("I am here, are u OK? %d", count++);
-    gtk_statusbar_push (GTK_STATUSBAR (status_bar), GPOINTER_TO_INT(data), buff);
-    g_free (buff);
+    gchar *buff = g_strdup_printf ("I am here, are u OK? %d", count++);
+    refresh_status(buff);
 }
 
 
@@ -89,7 +96,7 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 	gint x = widget->allocation.x;
 	gint y = widget->allocation.y;
 	gchar *buff;
-	if((x + x_offset) < 0 ||  (x + x_offset) > _WINDOW_WIDTH) {
+	if ((x + x_offset) < 0 ||  (x + x_offset) > _WINDOW_WIDTH) {
 //		g_print("%s collide to left or right wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
 		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
@@ -99,19 +106,13 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 //			role == 0 ? "jerry": "tom", x, y);
 		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
-		return -2;
 	} else {
 		gtk_fixed_move (GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
 		buff = g_strdup_printf ("%s moved to (%d, %d)",
 			role == 0 ? "jerry": "tom", x + x_offset, y + y_offset
 		);
 	}
-//	gchar *buff;
-//	buff = g_strdup_printf ("%s move to (%d, %d)\n",
-//		role == 0 ? "jerry": "tom", x + x_offset, y + y_offset
-//	);
-	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-	g_free (buff);
+	refresh_status(buff);
 	return 0;
 }
 
@@ -187,8 +188,7 @@ gboolean mv_role_by_key_press(int role, int key) {
 //	    	g_print("nothing_done_for_key %c\n", key);
 	    	gchar *buff;
 			buff= g_strdup_printf ("nothing done for key %c", key);
-			gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-			g_free (buff);
+			refresh_status(buff);
 	    	break;
 	}
 	return FALSE;
@@ -212,8 +212,7 @@ gboolean mv_role_by_key_press(int role, int key) {
 void* mv_tom(void* tdt) {
 //	g_print("tom_action_started\n");
 	gchar *buff= g_strdup_printf ("tom action started");
-	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-	g_free (buff);
+	refresh_status(buff);
 	while(1) {
 		if(tom_key) {
 			mv_role_by_key_press(1, tom_key);
@@ -231,8 +230,7 @@ void* mv_tom(void* tdt) {
 void* mv_jerry(void* tdt) {
 //	g_print("jerry_action_started\n");
 	gchar *buff= g_strdup_printf ("jerry action started");
-	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-	g_free (buff);
+	refresh_status(buff);
 	while(1) {
 		if(jerry_key) {
 			mv_role_by_key_press(0, jerry_key);
@@ -292,8 +290,7 @@ gboolean on_key_pressed(GtkWidget *widget,
 	    	buff = g_strdup_printf ("nothing_done_for_key_pressed %c", event->keyval);
 	    	break;
 	}
-	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-	g_free (buff);
+//	refresh_status(buff);
 	return FALSE;
 }
 
@@ -327,13 +324,12 @@ gboolean on_key_released(GtkWidget *widget,
 		case 65364:
 			tom_key = 0;
 //			g_print("set_tom_key_on_key_released, %d\n", tom_key);
-//			buff= g_strdup_printf ("set_tom_key_on_key_released, %d", tom_key);
+//			buff= g_strdup_printf ("set_tom_key_on_dkey_released, %d", tom_key);
 			break;
 	    default:
-	    	g_print("nothing_done_for_key_released %d\n", event->keyval);
+//	    	g_print("noathing_done_for_key_released %d\n", event->keyval);
 	    	gchar *buff= g_strdup_printf ("nothing done for key released, %d", event->keyval);
-	    	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-			g_free (buff);
+	    	refresh_status(buff);
 	    	break;
 	}
 
@@ -343,8 +339,7 @@ gboolean on_key_released(GtkWidget *widget,
 int main(int argc, char *argv[]) {
 	jerry_key = 0;
 	tom_key = 0;
-	g_thread_new("jerry_t", &mv_jerry, NULL);
-//	g_thread_new("jerry_t", &mv_tom, NULL);
+
 //	pthread_t t1;
 //	pthread_create(&t1, NULL, &mv_jerry, NULL);
 //	pthread_detach(t1);
@@ -388,6 +383,8 @@ int main(int argc, char *argv[]) {
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
     g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
     g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
+    g_thread_new("jerry_t", &mv_jerry, NULL);
+	g_thread_new("tom_t", &mv_tom, NULL);
     gtk_widget_show_all(window);
     gtk_main();
 
