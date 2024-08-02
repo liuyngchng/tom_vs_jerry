@@ -35,6 +35,9 @@ static GtkWidget *jerry;
  */
 static GtkWidget *tom;
 
+static GtkWidget *status_bar;
+static gint status_bar_id;
+
 static int jerry_key;
 
 static int tom_key;
@@ -73,29 +76,42 @@ static GtkWidget *pic_label_box( gchar     *pic_filename,
     return box;
 }
 
-void on_button_clicked(GtkButton *button, gpointer user_data) {
-    g_print("I'm %s, can u see me?\n", (gchar *) user_data);
+void on_button_clicked(GtkButton *button, gpointer data) {
+    gchar *buff;
+    static int count = 1;
+    buff = g_strdup_printf ("I am here, are u OK? %d", count++);
+    gtk_statusbar_push (GTK_STATUSBAR (status_bar), GPOINTER_TO_INT(data), buff);
+    g_free (buff);
 }
 
 
 int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 	gint x = widget->allocation.x;
 	gint y = widget->allocation.y;
+	gchar *buff;
 	if((x + x_offset) < 0 ||  (x + x_offset) > _WINDOW_WIDTH) {
-		g_print("%s collide to left or right wall, (%d, %d)\n",
+//		g_print("%s collide to left or right wall, (%d, %d)\n",
+//			role == 0 ? "jerry": "tom", x, y);
+		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
-		return -1;
-	}
-	if((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
-		g_print("%s collide to up or down wall, (%d, %d)\n",
+	} else if((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
+//		g_print("%s collide to up or down wall, (%d, %d)\n",
+//			role == 0 ? "jerry": "tom", x, y);
+		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
 		return -2;
+	} else {
+		gtk_fixed_move (GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
+		buff = g_strdup_printf ("%s moved to (%d, %d)",
+			role == 0 ? "jerry": "tom", x + x_offset, y + y_offset
+		);
 	}
-	gtk_fixed_move (GTK_FIXED (fixed), widget,
-		x + x_offset, y + y_offset
-	);
-//	g_print("%s move to %d, %d\n", role == 0 ? "jerry": "tom" ,
-//		x + x_offset, y + y_offset);
+//	gchar *buff;
+//	buff = g_strdup_printf ("%s move to (%d, %d)\n",
+//		role == 0 ? "jerry": "tom", x + x_offset, y + y_offset
+//	);
+	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+	g_free (buff);
 	return 0;
 }
 
@@ -128,7 +144,7 @@ gboolean mv_role_by_key_press(int role, int key) {
 	        break;
 	    case 'a':
 	    case 'A':
-	    	g_print("%s move left\n", role? "tom": "jerry");
+//	    	g_print("%s move left\n", role? "tom": "jerry");
 	        mv_lft(role, jerry);
 	        break;
 	    case 'd':
@@ -146,29 +162,29 @@ gboolean mv_role_by_key_press(int role, int key) {
 	    case 'i':
 	    case 'I':
 	    case 65362:
-	    	g_print("%s move up\n", role? "tom": "jerry");
+//	    	g_print("%s move up\n", role? "tom": "jerry");
 			mv_up(role, tom);
 			break;
 		case 'j':
 		case 'J':
 		case 65361:
-			g_print("%s move left\n", role? "tom": "jerry");
+//			g_print("%s move left\n", role? "tom": "jerry");
 			mv_lft(role, tom);
 			break;
 		case 'l':
 		case 'L':
 		case 65363:
-			g_print("%s move right\n", role? "tom": "jerry");
+//			g_print("%s move right\n", role? "tom": "jerry");
 			mv_rgt(role, tom);
 			break;
 		case 'k':
 		case 'K':
 		case 65364:
-			g_print("%s move down\n", role? "tom": "jerry");
+//			g_print("%s move down\n", role? "tom": "jerry");
 			mv_dn(role, tom);
 			break;
 	    default:
-	    	g_print("nothing done for key %c\n", key);
+	    	g_print("nothing_done_for_key %c\n", key);
 	    	break;
 	}
 	return FALSE;
@@ -206,7 +222,7 @@ void* mv_jerry(void* tdt) {
 		if(jerry_key) {
 			mv_role_by_key_press(0, jerry_key);
 		} else {
-//			g_print("do_nothing_for_jerry_action\n");
+			g_print("do_nothing_for_jerry_action\n");
 		}
 		g_usleep(_MV_INTERVAL_MS);
 	}
@@ -218,7 +234,7 @@ void* mv_jerry(void* tdt) {
  */
 gboolean on_key_pressed(GtkWidget *widget,
 		GdkEventKey *event, gpointer user_data) {
-	g_print("_on_key_pressed %c\n", event->keyval);
+//	g_print("_on_key_pressed %c\n", event->keyval);
 	switch(event->keyval) {
 	    case 'w':
 	    case 'W':
@@ -228,8 +244,10 @@ gboolean on_key_pressed(GtkWidget *widget,
 	    case 'D':
 	    case 's':
 	    case 'S':
-	    	jerry_key = event->keyval;
-//	    	g_print("set_jerry_key %c\n", jerry_key);
+	    	if(jerry_key !=event->keyval){
+				jerry_key = event->keyval;
+				g_print("set_jerry_key_on_key_pressed %c\n", jerry_key);
+	    	}
 	        break;
 	    case 'i':
 	    case 'I':
@@ -243,8 +261,10 @@ gboolean on_key_pressed(GtkWidget *widget,
 		case 'k':
 		case 'K':
 		case 65364:
-			tom_key = event->keyval;
-//			g_print("set_tom_key %c\n", tom_key);
+			if(tom_key !=event->keyval){
+				tom_key = event->keyval;
+				g_print("set_tom_key_on_key_pressed %c\n", tom_key);
+			}
 			break;
 	    default:
 //	    	g_print("nothing_done_for_key_pressed %c\n", event->keyval);
@@ -264,8 +284,8 @@ gboolean on_key_released(GtkWidget *widget,
 	    case 'D':
 	    case 's':
 	    case 'S':
-	        g_print("jerry_stop_move_for_key_released_event\n");
 	        jerry_key = 0;
+	        g_print("set_jerry_key_on_key_released, %d\n", jerry_key);
 	        break;
 	    case 'i':
 	    case 'I':
@@ -279,8 +299,8 @@ gboolean on_key_released(GtkWidget *widget,
 		case 'k':
 		case 'K':
 		case 65364:
-			g_print("tom_stop_move_for_key_released_event\n");
 			tom_key = 0;
+			g_print("set_tom_key_on_key_released, %d\n", tom_key);
 			break;
 	    default:
 	    	g_print("nothing_done_for_key_released %d\n", event->keyval);
@@ -307,26 +327,36 @@ int main(int argc, char *argv[]) {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), _WINDOW_WIDTH, _WINDOW_HEIGHT);
     gtk_window_set_title(GTK_WINDOW(window),"Tom and Jerry Game");
+    GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
+    gtk_container_add (GTK_CONTAINER (window), vbox);
     fixed = gtk_fixed_new();
     jerry = gtk_button_new();
 
     tom = gtk_button_new();
 
     g_signal_connect(window, 	"destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Jerry");
-    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Tom");
+//    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Jerry");
+//    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Tom");
+
     g_signal_connect(window, 	"key_press_event", G_CALLBACK(on_key_pressed), (gpointer)"test");
 	g_signal_connect(window, 	"key_release_event", G_CALLBACK(on_key_released), (gpointer)"test");
 
     GtkWidget *box1 = pic_label_box ("jerry.png", "Jerry");
     gtk_container_add (GTK_CONTAINER (jerry), box1);
     GtkWidget *box2 = pic_label_box ("tom.png", "Tom");
-        gtk_container_add (GTK_CONTAINER (tom), box2);
-    gtk_container_add(GTK_CONTAINER(window), fixed);
+    gtk_container_add (GTK_CONTAINER (tom), box2);
+
     gtk_fixed_put(GTK_FIXED(fixed), jerry, 0, 300);
     gtk_fixed_put(GTK_FIXED(fixed), tom, 800, 300);
+//    gtk_container_add(GTK_CONTAINER(vbox), fixed);
+	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
     // test move
 //    gtk_fixed_move (GTK_FIXED (fixed), button1, 10, 20);
+    status_bar = gtk_statusbar_new ();
+    gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
+    status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
+    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
+    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
     gtk_widget_show_all(window);
     gtk_main();
 
