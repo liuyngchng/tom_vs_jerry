@@ -184,7 +184,11 @@ gboolean mv_role_by_key_press(int role, int key) {
 			mv_dn(role, tom);
 			break;
 	    default:
-	    	g_print("nothing_done_for_key %c\n", key);
+//	    	g_print("nothing_done_for_key %c\n", key);
+	    	gchar *buff;
+			buff= g_strdup_printf ("nothing done for key %c", key);
+			gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+			g_free (buff);
 	    	break;
 	}
 	return FALSE;
@@ -192,24 +196,32 @@ gboolean mv_role_by_key_press(int role, int key) {
 
 
 
-void* mv_role(void* tdt) {
-	struct Action *action = (struct Action *)tdt;
-	g_print("%s action started\n", action->role==0 ? "jerry":"tom");
-	while(1) {
-
-		if(action->key) {
-			mv_role_by_key_press(action->role, action->key);
-		}
-		g_usleep(_MV_INTERVAL_MS);
-	}
-	return NULL;
-}
+//void* mv_role(void* tdt) {
+//	struct Action *action = (struct Action *)tdt;
+//	g_print("%s action started\n", action->role==0 ? "jerry":"tom");
+//	while(1) {
+//
+//		if(action->key) {
+//			mv_role_by_key_press(action->role, action->key);
+//		}
+//		g_usleep(_MV_INTERVAL_MS);
+//	}
+//	return NULL;
+//}
 
 void* mv_tom(void* tdt) {
-	g_print("tom_action_started\n");
+//	g_print("tom_action_started\n");
+	gchar *buff= g_strdup_printf ("tom action started");
+	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+	g_free (buff);
 	while(1) {
 		if(tom_key) {
 			mv_role_by_key_press(1, tom_key);
+		}else {
+//			g_print("do_nothing_for_tom_action\n");
+//			gchar *buff= g_strdup_printf ("do nothing for tom action");
+//			gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+//			g_free (buff);
 		}
 		g_usleep(_MV_INTERVAL_MS);
 	}
@@ -217,12 +229,18 @@ void* mv_tom(void* tdt) {
 }
 
 void* mv_jerry(void* tdt) {
-	g_print("jerry_action_started\n");
+//	g_print("jerry_action_started\n");
+	gchar *buff= g_strdup_printf ("jerry action started");
+	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+	g_free (buff);
 	while(1) {
 		if(jerry_key) {
 			mv_role_by_key_press(0, jerry_key);
 		} else {
-			g_print("do_nothing_for_jerry_action\n");
+//			g_print("do_nothing_for_jerry_action\n");
+//			gchar *buff= g_strdup_printf ("do nothing for jerry action");
+//			gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+//			g_free (buff);
 		}
 		g_usleep(_MV_INTERVAL_MS);
 	}
@@ -235,6 +253,7 @@ void* mv_jerry(void* tdt) {
 gboolean on_key_pressed(GtkWidget *widget,
 		GdkEventKey *event, gpointer user_data) {
 //	g_print("_on_key_pressed %c\n", event->keyval);
+	gchar *buff;
 	switch(event->keyval) {
 	    case 'w':
 	    case 'W':
@@ -246,7 +265,8 @@ gboolean on_key_pressed(GtkWidget *widget,
 	    case 'S':
 	    	if(jerry_key !=event->keyval){
 				jerry_key = event->keyval;
-				g_print("set_jerry_key_on_key_pressed %c\n", jerry_key);
+//				g_print("set_jerry_key_on_key_pressed %c\n", jerry_key);
+				buff = g_strdup_printf ("set_jerry_key_on_key_pressed %c", jerry_key);
 	    	}
 	        break;
 	    case 'i':
@@ -263,18 +283,23 @@ gboolean on_key_pressed(GtkWidget *widget,
 		case 65364:
 			if(tom_key !=event->keyval){
 				tom_key = event->keyval;
-				g_print("set_tom_key_on_key_pressed %c\n", tom_key);
+//				g_print("set_tom_key_on_key_pressed %c\n", tom_key);
+				buff = g_strdup_printf ("set_tom_key_on_key_pressed %c", tom_key);
 			}
 			break;
 	    default:
 //	    	g_print("nothing_done_for_key_pressed %c\n", event->keyval);
+	    	buff = g_strdup_printf ("nothing_done_for_key_pressed %c", event->keyval);
 	    	break;
 	}
+	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+	g_free (buff);
 	return FALSE;
 }
 
 gboolean on_key_released(GtkWidget *widget,
 		GdkEventKey *event, gpointer user_data) {
+//	gchar *buff;
 	switch(event->keyval) {
 	    case 'w':
 	    case 'W':
@@ -285,7 +310,8 @@ gboolean on_key_released(GtkWidget *widget,
 	    case 's':
 	    case 'S':
 	        jerry_key = 0;
-	        g_print("set_jerry_key_on_key_released, %d\n", jerry_key);
+//	        g_print("set_jerry_key_on_key_released, %d\n", jerry_key);
+//			buff= g_strdup_printf ("set_jerry_key_on_key_released, %d", jerry_key);
 	        break;
 	    case 'i':
 	    case 'I':
@@ -300,20 +326,25 @@ gboolean on_key_released(GtkWidget *widget,
 		case 'K':
 		case 65364:
 			tom_key = 0;
-			g_print("set_tom_key_on_key_released, %d\n", tom_key);
+//			g_print("set_tom_key_on_key_released, %d\n", tom_key);
+//			buff= g_strdup_printf ("set_tom_key_on_key_released, %d", tom_key);
 			break;
 	    default:
 	    	g_print("nothing_done_for_key_released %d\n", event->keyval);
+	    	gchar *buff= g_strdup_printf ("nothing done for key released, %d", event->keyval);
+	    	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
+			g_free (buff);
 	    	break;
-	    }
-	      return FALSE;
+	}
+
+    return FALSE;
 }
 
 int main(int argc, char *argv[]) {
 	jerry_key = 0;
 	tom_key = 0;
 	g_thread_new("jerry_t", &mv_jerry, NULL);
-	g_thread_new("jerry_t", &mv_tom, NULL);
+//	g_thread_new("jerry_t", &mv_tom, NULL);
 //	pthread_t t1;
 //	pthread_create(&t1, NULL, &mv_jerry, NULL);
 //	pthread_detach(t1);
