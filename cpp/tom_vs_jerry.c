@@ -86,8 +86,7 @@ void refresh_status(gchar *buff) {
 }
 
 void on_button_clicked(GtkButton *button, gpointer data) {
-    static int count = 1;
-    gchar *buff = g_strdup_printf ("I am here, are u OK? %d", count++);
+    gchar *buff = g_strdup_printf ("I am %s, can u see me?", (gchar *)data);
     refresh_status(buff);
 }
 
@@ -99,12 +98,12 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 	if ((x + x_offset) < 0 ||  (x + x_offset) > _WINDOW_WIDTH) {
 //		g_print("%s collide to left or right wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
-		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
+		buff = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
-	} else if((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
+	} else if ((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
 //		g_print("%s collide to up or down wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
-		buff = g_strdup_printf ("%s collide to left or right wall (%d, %d)",
+		buff = g_strdup_printf ("%s collide to north/south wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
 	} else {
 		gtk_fixed_move (GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
@@ -381,8 +380,8 @@ int main(int argc, char *argv[]) {
     status_bar = gtk_statusbar_new ();
     gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
-    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
-    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), GINT_TO_POINTER (status_bar_id));
+    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), (gpointer)"jerry");
+    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), (gpointer)"tom");
     g_thread_new("jerry_t", &mv_jerry, NULL);
 	g_thread_new("tom_t", &mv_tom, NULL);
     gtk_widget_show_all(window);
