@@ -116,10 +116,6 @@ void refresh_status(gchar *buff) {
 	g_free (buff);
 }
 
-void on_button_clicked(GtkButton *button, gpointer data) {
-//    gchar *buff = g_strdup_printf ("I am %s, can u see me?", (gchar *)data);
-//    refresh_status(buff);
-}
 
 void reset_game() {
 	jerry_key 				= 0;
@@ -416,48 +412,33 @@ int main(int argc, char *argv[]) {
 	jerry_collide_to_wall 	= 0;
 	tom_collide_to_wall 	= 0;
 
-//	pthread_t t1;
-//	pthread_create(&t1, NULL, &mv_jerry, NULL);
-//	pthread_detach(t1);
-//
-//	pthread_t t2;
-//	pthread_create(&t2, NULL, &mv_tom, NULL);
-//	pthread_detach(t2);
 
     gtk_init(&argc, &argv);
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), _WINDOW_WIDTH, _WINDOW_HEIGHT);
     gtk_window_set_title(GTK_WINDOW(window),"Tom and Jerry Game");
-    GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
-    gtk_container_add (GTK_CONTAINER (window), vbox);
+//    GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
+//    gtk_container_add (GTK_CONTAINER (window), vbox);
     fixed = gtk_fixed_new();
-    jerry = gtk_button_new();
-    tom = gtk_button_new();
+    jerry = pic_label_box ("jerry.png", "Jerry");
+    tom = pic_label_box ("tom.png", "Tom");
 
     g_signal_connect(window, 	"destroy", G_CALLBACK(gtk_main_quit), NULL);
-//    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Jerry");
-//    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), (gpointer)"Tom");
-
     g_signal_connect(window, 	"key_press_event", G_CALLBACK(on_key_pressed), (gpointer)"test");
 	g_signal_connect(window, 	"key_release_event", G_CALLBACK(on_key_released), (gpointer)"test");
 
-    GtkWidget *box1 = pic_label_box ("jerry.png", "Jerry");
-    gtk_container_add (GTK_CONTAINER (jerry), box1);
-    GtkWidget *box2 = pic_label_box ("tom.png", "Tom");
-    gtk_container_add (GTK_CONTAINER (tom), box2);
-
+    status_bar = gtk_statusbar_new ();
     gtk_fixed_put(GTK_FIXED(fixed), jerry, JERRY_X_INIT, JERRY_Y_INIT);
     gtk_fixed_put(GTK_FIXED(fixed), tom, TOM_X_INIT, TOM_Y_INIT);
-
-	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
+    gtk_fixed_put(GTK_FIXED(fixed), status_bar, 200, _WINDOW_HEIGHT-100);
+//	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (window), fixed);
     // test move
 //    gtk_fixed_move (GTK_FIXED (fixed), button1, 10, 20);
-    status_bar = gtk_statusbar_new ();
-    gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
+
+//    gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
-    g_signal_connect(jerry, 	"clicked", G_CALLBACK(on_button_clicked), (gpointer)"jerry");
-    g_signal_connect(tom, 		"clicked", G_CALLBACK(on_button_clicked), (gpointer)"tom");
     g_thread_new("jerry_t", &mv_jerry, NULL);
 	g_thread_new("tom_t", &mv_tom, NULL);
     gtk_widget_show_all(window);
