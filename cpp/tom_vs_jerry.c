@@ -47,6 +47,8 @@ static GtkWidget *tom;
  */
 static GtkWidget *status_bar;
 
+static gchar *status_content;
+
 /**
  * jerry 得分
  */
@@ -108,12 +110,10 @@ static GtkWidget *pic_label_box( gchar     *pic_filename,
 }
 
 void refresh_status(gchar *buff) {
-	if(NULL == buff || NULL == status_bar) {
+	if (NULL == buff || NULL == status_bar) {
 		return;
 	}
 	gtk_statusbar_push (GTK_STATUSBAR (status_bar), status_bar_id, buff);
-//	g_printf("g_free(%p)\n", buff);
-	g_free (buff);
 }
 
 
@@ -125,8 +125,8 @@ void reset_game() {
 	tom_collide_to_wall 	= 0;
 	gtk_fixed_move (GTK_FIXED (fixed), jerry, 	JERRY_X_INIT, 	JERRY_Y_INIT);
 	gtk_fixed_move (GTK_FIXED (fixed), tom, 	TOM_X_INIT, 	TOM_Y_INIT);
-	gchar *buff = g_strdup_printf ("game restart");
-	refresh_status(buff);
+	status_content = g_strdup_printf ("game restart");
+	refresh_status(status_content);
 }
 
 int check_meet_each_other() {
@@ -154,9 +154,9 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 		} else {
 			jerry_collide_to_wall = 1;
 		}
-		gchar *buff = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
+		status_content = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
-		refresh_status(buff);
+		refresh_status(status_content);
 	} else if ((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
 //		g_print("%s collide to up or down wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
@@ -255,10 +255,8 @@ gboolean mv_role_by_key_press(int role, int key) {
 			mv_dn(role, tom);
 			break;
 	    default:
-//	    	g_print("nothing_done_for_key %c\n", key);
-	    	gchar *buff;
-			buff= g_strdup_printf ("nothing done for key %c", key);
-			refresh_status(buff);
+	    	status_content= g_strdup_printf ("nothing done for key %c", key);
+			refresh_status(status_content);
 	    	break;
 	}
 	return FALSE;
@@ -280,9 +278,8 @@ gboolean mv_role_by_key_press(int role, int key) {
 //}
 
 void* mv_tom(void* tdt) {
-//	g_print("tom_action_started\n");
-	gchar *buff= g_strdup_printf ("tom action started");
-	refresh_status(buff);
+	status_content= g_strdup_printf ("tom action started");
+	refresh_status(status_content);
 	while(1) {
 		if (tom_key && !is_game_over) {
 			mv_role_by_key_press(1, tom_key);
@@ -299,8 +296,8 @@ void* mv_tom(void* tdt) {
 
 void* mv_jerry(void* tdt) {
 //	g_print("jerry_action_started\n");
-	gchar *buff= g_strdup_printf ("jerry action started");
-	refresh_status(buff);
+	status_content = g_strdup_printf("jerry action started");
+	refresh_status(status_content);
 	while(1) {
 		if (jerry_key && !is_game_over) {
 			mv_role_by_key_press(0, jerry_key);
@@ -397,8 +394,8 @@ gboolean on_key_released(GtkWidget *widget,
 			break;
 	    default:
 //	    	g_print("noathing_done_for_key_released %d\n", event->keyval);
-	    	gchar *buff= g_strdup_printf ("nothing done for key released, %d", event->keyval);
-	    	refresh_status(buff);
+	    	status_content= g_strdup_printf ("nothing done for key released, %d", event->keyval);
+	    	refresh_status(status_content);
 	    	break;
 	}
 
@@ -418,27 +415,29 @@ int main(int argc, char *argv[]) {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), _WINDOW_WIDTH, _WINDOW_HEIGHT);
     gtk_window_set_title(GTK_WINDOW(window),"Tom and Jerry Game");
-//    GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
-//    gtk_container_add (GTK_CONTAINER (window), vbox);
+    GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
+    gtk_container_add (GTK_CONTAINER (window), vbox);
     fixed = gtk_fixed_new();
     jerry = pic_label_box ("jerry.png", "Jerry");
     tom = pic_label_box ("tom.png", "Tom");
+    status_bar = gtk_statusbar_new ();
+    status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
 
     g_signal_connect(window, 	"destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(window, 	"key_press_event", G_CALLBACK(on_key_pressed), (gpointer)"test");
 	g_signal_connect(window, 	"key_release_event", G_CALLBACK(on_key_released), (gpointer)"test");
 
-    status_bar = gtk_statusbar_new ();
+
     gtk_fixed_put(GTK_FIXED(fixed), jerry, JERRY_X_INIT, JERRY_Y_INIT);
     gtk_fixed_put(GTK_FIXED(fixed), tom, TOM_X_INIT, TOM_Y_INIT);
-    gtk_fixed_put(GTK_FIXED(fixed), status_bar, 200, _WINDOW_HEIGHT-100);
-//	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
-	gtk_container_add (GTK_CONTAINER (window), fixed);
+	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
+//	gtk_container_add (GTK_CONTAINER (window), fixed);
     // test move
 //    gtk_fixed_move (GTK_FIXED (fixed), button1, 10, 20);
 
-//    gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
-    status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
+    gtk_box_pack_start(GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
+	status_content = g_strdup_printf("game start");
+	refresh_status(status_content);
     g_thread_new("jerry_t", &mv_jerry, NULL);
 	g_thread_new("tom_t", &mv_tom, NULL);
     gtk_widget_show_all(window);
