@@ -13,12 +13,12 @@
 /**
  * 窗口宽度 单位：像素
  */
-#define _WINDOW_WIDTH 	800
+#define _WINDOW_WIDTH 	1024
 
 /**
  * 窗口高度 单位：像素
  */
-#define _WINDOW_HEIGHT 	600
+#define _WINDOW_HEIGHT 	768
 
 #define _MV_INTERVAL_US 5*1000
 
@@ -172,9 +172,11 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 		gchar *buff = g_strdup_printf ("tom has caught jerry, game over");
 		refresh_status(buff);
 	} else {
-		gtk_fixed_move (GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
-		if(tom_collide_to_wall || jerry_collide_to_wall) {
-			if(role) {
+		gtk_fixed_move(GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
+		g_print("%s move to (%d, %d)\n",
+			role == 0 ? "jerry": "tom", x + x_offset, y + y_offset);
+		if (tom_collide_to_wall || jerry_collide_to_wall) {
+			if (role) {
 				tom_collide_to_wall = 0;
 			} else {
 				jerry_collide_to_wall = 0;
@@ -210,24 +212,22 @@ gboolean mv_role_by_key_press(int role, int key) {
 	switch(key) {
 	    case 'w':
 	    case 'W':
-//	        g_print("%s move up\n", role? "tom": "jerry");
+	        g_print("%s move up\n", role? "tom": "jerry");
 	        mv_up(role, jerry);
 	        break;
 	    case 'a':
 	    case 'A':
-//	    	g_print("%s move left\n", role? "tom": "jerry");
+	    	g_print("%s move left\n", role? "tom": "jerry");
 	        mv_lft(role, jerry);
 	        break;
 	    case 'd':
 	    case 'D':
-//	    case 68:
-//		case 100:
-//	    	g_print("%s move right\n", role? "tom": "jerry");
+	    	g_print("%s move right\n", role? "tom": "jerry");
 	        mv_rgt(role, jerry);
 	        break;
 	    case 's':
 	    case 'S':
-//	    	g_print("%s move down\n", role? "tom": "jerry");
+	    	g_print("%s move down\n", role? "tom": "jerry");
 	        mv_dn(role, jerry);
 	        break;
 	    case 'i':
@@ -310,6 +310,10 @@ void* mv_jerry(void* tdt) {
 		g_usleep(_MV_INTERVAL_US);
 	}
 	return NULL;
+}
+
+void on_button_clicked(GtkButton *widget, gpointer user_data) {
+
 }
 
 /**
@@ -412,7 +416,6 @@ int main(int argc, char *argv[]) {
 	tom_collide_to_wall 	= 0;
 
     gtk_init(&argc, &argv);
-
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), _WINDOW_WIDTH, _WINDOW_HEIGHT);
     gtk_window_set_title(GTK_WINDOW(window),"Tom and Jerry Game");
@@ -428,9 +431,13 @@ int main(int argc, char *argv[]) {
     gtk_entry_set_max_length (GTK_ENTRY (timer), 2);
 	gtk_table_attach_defaults (GTK_TABLE (table), label1, 0, 1, 0, 1);
 	gtk_table_attach_defaults (GTK_TABLE (table), label2, 1, 2, 0, 1);
-	gtk_table_attach_defaults (GTK_TABLE (table), timer, 2, 3, 0, 1);
+//	gtk_table_attach_defaults (GTK_TABLE (table), timer, 2, 3, 0, 1);
+	gtk_table_attach (GTK_TABLE (table), timer, 2, 3, 0, 1,
+				GTK_SHRINK, GTK_SHRINK, 0, 0);
 	gtk_table_attach_defaults (GTK_TABLE (table), label3, 3, 4, 0, 1);
-	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
+//	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
+	gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
+			GTK_SHRINK | GTK_EXPAND, GTK_SHRINK | GTK_EXPAND, 0, 0);
 
     GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
 
@@ -441,8 +448,8 @@ int main(int argc, char *argv[]) {
     status_bar = gtk_statusbar_new ();
     gtk_widget_set_size_request(status_bar, -1, 50);
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
-
     g_signal_connect(window, "destroy", 			G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(button, "clicked", 			G_CALLBACK(on_button_clicked), "start_button");
     g_signal_connect(window, "key_press_event", 	G_CALLBACK(on_key_pressed), (gpointer)"test");
 	g_signal_connect(window, "key_release_event", 	G_CALLBACK(on_key_released), (gpointer)"test");
 
