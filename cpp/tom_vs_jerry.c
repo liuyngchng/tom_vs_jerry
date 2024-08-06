@@ -42,6 +42,10 @@ static int jerry_key;
 
 static int tom_key;
 
+static int jerry_collide_to_wall = 0;
+
+static int tom_collide_to_wall = 0;
+
 struct Action {
 	int role;
 	int key;
@@ -94,24 +98,41 @@ void on_button_clicked(GtkButton *button, gpointer data) {
 int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 	gint x = widget->allocation.x;
 	gint y = widget->allocation.y;
-	gchar *buff;
 	if ((x + x_offset) < 0 ||  (x + x_offset) > _WINDOW_WIDTH) {
 //		g_print("%s collide to left or right wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
-		buff = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
+		if(role) {
+			tom_collide_to_wall = 1;
+		} else {
+			jerry_collide_to_wall = 1;
+		}
+		gchar *buff = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
+		refresh_status(buff);
 	} else if ((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
 //		g_print("%s collide to up or down wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
-		buff = g_strdup_printf ("%s collide to north/south wall (%d, %d)",
+		if(role) {
+			tom_collide_to_wall = 1;
+		} else {
+			jerry_collide_to_wall = 1;
+		}
+		gchar *buff = g_strdup_printf ("%s collide to north/south wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
+		refresh_status(buff);
 	} else {
 		gtk_fixed_move (GTK_FIXED (fixed), widget, x + x_offset, y + y_offset);
-		buff = g_strdup_printf ("%s moved to (%d, %d)",
-			role == 0 ? "jerry": "tom", x + x_offset, y + y_offset
-		);
+		if(tom_collide_to_wall || jerry_collide_to_wall) {
+			if(role) {
+				tom_collide_to_wall = 0;
+			} else {
+				jerry_collide_to_wall = 0;
+			}
+			gchar *buff = g_strdup_printf ("");
+			refresh_status(buff);
+		}
 	}
-	refresh_status(buff);
+
 	return 0;
 }
 
