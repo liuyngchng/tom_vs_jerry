@@ -157,7 +157,7 @@ int mv_widget(int role, GtkWidget *widget, int x_offset, int y_offset) {
 		status_content = g_strdup_printf ("%s collide to east/west wall (%d, %d)",
 			role == 0 ? "jerry": "tom", x, y);
 		refresh_status(status_content);
-	} else if ((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-120) {
+	} else if ((y + y_offset) < 0 ||  (y + y_offset) > _WINDOW_HEIGHT-100) {
 //		g_print("%s collide to up or down wall, (%d, %d)\n",
 //			role == 0 ? "jerry": "tom", x, y);
 		if(role) {
@@ -396,8 +396,8 @@ gboolean on_key_released(GtkWidget *widget,
 			break;
 	    default:
 //	    	g_print("noathing_done_for_key_released %d\n", event->keyval);
-	    	status_content= g_strdup_printf ("nothing done for key released, %d", event->keyval);
-	    	refresh_status(status_content);
+//	    	status_content= g_strdup_printf ("nothing done for key released, %d", event->keyval);
+//	    	refresh_status(status_content);
 	    	break;
 	}
 
@@ -411,18 +411,39 @@ int main(int argc, char *argv[]) {
 	jerry_collide_to_wall 	= 0;
 	tom_collide_to_wall 	= 0;
 
-
     gtk_init(&argc, &argv);
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), _WINDOW_WIDTH, _WINDOW_HEIGHT);
     gtk_window_set_title(GTK_WINDOW(window),"Tom and Jerry Game");
+//    GtkWidget *hbox = gtk_hbox_new (FALSE, 1);
+    GtkWidget *table = gtk_table_new (1, 6, TRUE);
+    GtkWidget *label1 = gtk_label_new ("Jerry Score:");
+    GtkWidget *label2 = gtk_label_new ("Timer:");
+    GtkWidget *label3 = gtk_label_new ("Tom Score:");
+
+    timer = gtk_entry_new();
+    const gchar* buffer =gtk_entry_get_text(GTK_ENTRY(timer));
+    gtk_entry_set_text(GTK_ENTRY(timer), "15");
+    gtk_entry_set_max_length (GTK_ENTRY (timer), 2);
+//	gtk_box_pack_start(GTK_BOX (hbox), label1, TRUE, TRUE, 0);
+//	gtk_box_pack_start(GTK_BOX (hbox), label2, TRUE, TRUE, 0);
+//	gtk_box_pack_start(GTK_BOX (hbox), timer, TRUE, TRUE, 0);
+//	gtk_box_pack_start(GTK_BOX (hbox), label3, TRUE, TRUE, 0);
+	gtk_table_attach_defaults (GTK_TABLE (table), label1, 0, 1, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), label2, 2, 3, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), timer, 3, 4, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), label3, 5, 6, 0, 1);
+
+
     GtkWidget *vbox = gtk_vbox_new (FALSE, 1);
+
     gtk_container_add (GTK_CONTAINER (window), vbox);
-    fixed = gtk_fixed_new();
-    jerry = pic_label_box ("jerry.png", "Jerry");
-    tom = pic_label_box ("tom.png", "Tom");
+    fixed   = gtk_fixed_new();
+    jerry   = pic_label_box ("jerry.png", "Jerry");
+    tom 	= pic_label_box ("tom.png", "Tom");
     status_bar = gtk_statusbar_new ();
+    gtk_widget_set_size_request(status_bar, -1, 50);
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
 
     g_signal_connect(window, "destroy", 			G_CALLBACK(gtk_main_quit), NULL);
@@ -432,6 +453,7 @@ int main(int argc, char *argv[]) {
 
     gtk_fixed_put(GTK_FIXED(fixed), jerry, JERRY_X_INIT, JERRY_Y_INIT);
     gtk_fixed_put(GTK_FIXED(fixed), tom, TOM_X_INIT, TOM_Y_INIT);
+    gtk_box_pack_start(GTK_BOX (vbox), table, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
 //	gtk_container_add (GTK_CONTAINER (window), fixed);
     // test move
