@@ -100,6 +100,7 @@ static GtkWidget *pic_label_box( gchar     *pic_filename,
 
     /* Pack the image and label into the box */
     gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 3);
+    gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 3);
     gtk_widget_show (image);
     gtk_widget_show (label);
 
@@ -116,8 +117,8 @@ void refresh_status(gchar *buff) {
 }
 
 void on_button_clicked(GtkButton *button, gpointer data) {
-    gchar *buff = g_strdup_printf ("I am %s, can u see me?", (gchar *)data);
-    refresh_status(buff);
+//    gchar *buff = g_strdup_printf ("I am %s, can u see me?", (gchar *)data);
+//    refresh_status(buff);
 }
 
 void reset_game() {
@@ -354,9 +355,10 @@ gboolean on_key_pressed(GtkWidget *widget,
 			}
 			break;
 		case 32:
-			if(is_game_over) {
-				reset_game();
-			}
+//			if(is_game_over) {
+//
+//			}
+			reset_game();
 			break;
 	    default:
 	    	break;
@@ -431,7 +433,6 @@ int main(int argc, char *argv[]) {
     gtk_container_add (GTK_CONTAINER (window), vbox);
     fixed = gtk_fixed_new();
     jerry = gtk_button_new();
-
     tom = gtk_button_new();
 
     g_signal_connect(window, 	"destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -448,7 +449,7 @@ int main(int argc, char *argv[]) {
 
     gtk_fixed_put(GTK_FIXED(fixed), jerry, JERRY_X_INIT, JERRY_Y_INIT);
     gtk_fixed_put(GTK_FIXED(fixed), tom, TOM_X_INIT, TOM_Y_INIT);
-//    gtk_container_add(GTK_CONTAINER(vbox), fixed);
+
 	gtk_box_pack_start(GTK_BOX (vbox), fixed, TRUE, TRUE, 0);
     // test move
 //    gtk_fixed_move (GTK_FIXED (fixed), button1, 10, 20);
