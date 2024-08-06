@@ -392,6 +392,8 @@ gboolean on_key_released(GtkWidget *widget,
 //			g_print("set_tom_key_on_key_released, %d\n", tom_key);
 //			buff= g_strdup_printf ("set_tom_key_on_dkey_released, %d", tom_key);
 			break;
+		case 32:
+			break;
 	    default:
 //	    	g_print("noathing_done_for_key_released %d\n", event->keyval);
 	    	status_content= g_strdup_printf ("nothing done for key released, %d", event->keyval);
@@ -423,9 +425,9 @@ int main(int argc, char *argv[]) {
     status_bar = gtk_statusbar_new ();
     status_bar_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "status_bar");
 
-    g_signal_connect(window, 	"destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(window, 	"key_press_event", G_CALLBACK(on_key_pressed), (gpointer)"test");
-	g_signal_connect(window, 	"key_release_event", G_CALLBACK(on_key_released), (gpointer)"test");
+    g_signal_connect(window, "destroy", 			G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(window, "key_press_event", 	G_CALLBACK(on_key_pressed), (gpointer)"test");
+	g_signal_connect(window, "key_release_event", 	G_CALLBACK(on_key_released), (gpointer)"test");
 
 
     gtk_fixed_put(GTK_FIXED(fixed), jerry, JERRY_X_INIT, JERRY_Y_INIT);
